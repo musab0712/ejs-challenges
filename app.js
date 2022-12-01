@@ -20,27 +20,27 @@ app.use(bodyParser.urlencoded({extended : true}));
 app.use(express.static("public"));
 
 
-app.get("/", function(req, res){
+app.get("/", (req, res) => {
     res.render("home", {
         startingContent : homeStartingContent,
         posts : totalPost
     });
 });
 
-app.get("/about", function(req, res){
+app.get("/about", (req, res) => {
     res.render("about", {startingAbout :aboutContent});
 });
 
 
-app.get("/contact", function(req, res){
+app.get("/contact", (req, res) => {
     res.render("contact", {startingContact :contactContent});
 });
 
-app.get("/compose", function(req, res){
+app.get("/compose", (req, res) => {
     res.render("compose");
 });
 
-app.post("/compose", function(req,res){
+app.post("/compose", (req,res) => {
     const post = {
         title : req.body.postTitle,
         content : req.body.postContent
@@ -49,7 +49,20 @@ app.post("/compose", function(req,res){
     res.redirect("/");
 })
 
+app.get("/posts/:postName", (req, res) => {
+    let name = req.params.postName;
+    console.log(name);
+    totalPost.forEach(posts => {
+        if(name === posts.title) {
+            res.render("post", {
+                title : name,
+                content : posts.content
+            });
+        }
+    });
+});
 
-app.listen(port, function(){
+
+app.listen(port, () => {
     console.log("server is running");
 });
