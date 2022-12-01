@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
+const _ = require("lodash");
 
 const homeStartingContent = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.";
 
@@ -50,12 +51,12 @@ app.post("/compose", (req,res) => {
 })
 
 app.get("/posts/:postName", (req, res) => {
-    let name = req.params.postName;
+    let name = _.kebabCase(req.params.postName);
     console.log(name);
     totalPost.forEach(posts => {
-        if(name === posts.title) {
+        if(name === _.kebabCase(posts.title)) {
             res.render("post", {
-                title : name,
+                title : posts.title,
                 content : posts.content
             });
         }
